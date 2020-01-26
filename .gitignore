@@ -1,0 +1,11 @@
+node_modules/
+.node_modules/
+
+**/.vscode/*
+!**/.vscode/tasks.json
+!**/.vscode/settings.template.json
+!**/.vscode/launch.template.json
+!**/.vscode/extensions.json
+
+dist/
+tests/
