@@ -42,6 +42,18 @@ export class NumInput extends AbstractInput implements EventListenerObject {
     this.textChanged.emmit(this._text);
   }
 
+  private _isValidUpdate() {
+    if (this._value === null && this._text === '' || !isNaN(parseFloat(String(this._value)))) {
+      this._isValid = true;
+      this._controlElement?.classList.remove('error');
+    } else {
+      this._isValid = false;
+      this._controlElement?.classList.add('error');
+    }
+
+    this.isValidChanged.emmit(this._isValid);
+  }
+
   handleEvent(event: Event): void {
     switch (event.type) {
       case 'input':

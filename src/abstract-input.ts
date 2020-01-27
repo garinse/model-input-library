@@ -61,18 +61,6 @@ export abstract class AbstractInput {
     return this._isValid;
   }
 
-  protected _isValidUpdate() {
-    if (this._value === null && this._text === '' || !isNaN(parseFloat(String(this._value)))) {
-      this._isValid = true;
-      this._controlElement?.classList.remove('error');
-    } else {
-      this._isValid = false;
-      this._controlElement?.classList.add('error');
-    }
-
-    this.isValidChanged.emmit(this._isValid);
-  }
-
   protected destroy() {
     this._controlElement = null;
     this._hostInputElement = null;
