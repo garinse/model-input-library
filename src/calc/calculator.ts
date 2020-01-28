@@ -1,5 +1,3 @@
-import { Utils } from "../utils/utils.js";
-
 export class Calculator {
 
   private operators: { [key: string]: { priority: number } } = {
@@ -60,7 +58,7 @@ export class Calculator {
     for (let i = 0; i < valueArr.length; i++) {
       const element = valueArr[i];
 
-      if (Utils.isNumeric(element)) {
+      if (this.isNumeric(element)) {
         out.push(element);
       } else if (this.operators.hasOwnProperty(element)) {
 
@@ -119,7 +117,7 @@ export class Calculator {
     const resultArr: any[] = [];
 
     for (let i = 0; i < arr.length; i++) {
-      if (Utils.isNumeric(arr[i])) {
+      if (this.isNumeric(arr[i])) {
         resultArr.push(arr[i]);
       } else {
         const a = resultArr.pop();
@@ -145,7 +143,7 @@ export class Calculator {
 
     let result = resultArr[0];
 
-    if (Utils.isNumeric(result)) {
+    if (this.isNumeric(result)) {
       if (!Number.isInteger(result)) {
         // result = Number(parseFloat(result).toFixed(2));
       }
@@ -154,5 +152,9 @@ export class Calculator {
     }
 
     return result;
+  }
+
+  private isNumeric(value: string) {
+    return !isNaN(parseFloat(value)) && isFinite(+value);
   }
 }
