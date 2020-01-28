@@ -7,4 +7,3 @@ node_modules/
 !**/.vscode/launch.template.json
 !**/.vscode/extensions.json
 
-dist/
