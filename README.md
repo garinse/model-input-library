@@ -14,6 +14,14 @@
 
 ---
 
+#### Run example with the command:
+
+**npm run dev**
+
+It will launch live-server in the project's root directory, example will be available in a browser by the link http://127.0.0.1:8080
+
+---
+
 #### For compiling/recompiling run the command:
 
 **npm run build**
@@ -22,14 +30,6 @@ Compiled files will be available in /dist folder.
 
 Initial file of example index.html is in the project's root directory. Compiled .js files from the /dist directory are connected to this file.
 Custom user styles are in style.css file in the project's root.
-
----
-
-#### Run example with the command:
-
-**npm run dev**
-
-It will launch live-server in the project's root directory, example will be available in a browser by the link http://127.0.0.1:8080
 
 ---
 
