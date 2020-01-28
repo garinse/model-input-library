@@ -1,4 +1,5 @@
 import { NumInput } from './src/numeric/numinput.js';
+import { CalcInput } from './src/calc/calcinput.js';
 
 window.onload = () => {
   /* 
@@ -51,4 +52,53 @@ window.onload = () => {
       }
     }
   }
+
+  /* 
+  * Calc component example
+  */
+ const calcContainer = document.getElementById('calcInput');
+ if (calcContainer) {
+   const calcInput = new CalcInput(calcContainer);
+   calcInput.render();
+
+   const calcValue = document.querySelector('.calc-info .info__value');
+   if (calcValue) {
+     calcInput.valueChanged.subscribe((value) => {
+       calcValue.innerHTML = value ? String(value) : '';
+     });
+   }
+
+   const calcInputText = document.querySelector('.calc-info .info__text');
+   if (calcInputText) {
+     calcInput.textChanged.subscribe((value) => {
+       calcInputText.innerHTML = value;
+     });
+   }
+
+   const calcValid = document.querySelector('.calc-info .info__valid');
+   if (calcValid) {
+     // calcValid.innerHTML = String(calcInput.isValid);
+     const subs = calcInput.isValidChanged.subscribe((value) => {
+       calcValid.innerHTML = String(value);
+     });
+     // setTimeout(() => subs.unsubscribe(), 3000);
+   }
+
+   const inputValue: HTMLInputElement | null = document.querySelector('.calc-control .input-value');
+   const buttonValue: HTMLButtonElement | null = document.querySelector('.calc-control .button-value');
+   if (buttonValue) {
+     buttonValue.onclick = () => {
+       calcInput.value = String(inputValue?.value);
+     }
+   }
+
+   const inputText: HTMLInputElement | null = document.querySelector('.calc-control .input-text');
+   const buttonText: HTMLButtonElement | null = document.querySelector('.calc-control .button-text');
+   if (buttonText) {
+     buttonText.onclick = () => {
+       calcInput.text = String(inputText?.value);
+
+     }
+   }
+ }
 }
