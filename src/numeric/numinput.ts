@@ -1,6 +1,7 @@
-import { AbstractInput } from "../abstract-input.js";
+import { NumericBase } from "../numeric-base.js";
+import { Utils } from "../utils/utils.js";
 
-export class NumInput extends AbstractInput implements EventListenerObject {
+export class NumInput extends NumericBase implements EventListenerObject {
 
   _prefix: string;
 
@@ -27,17 +28,8 @@ export class NumInput extends AbstractInput implements EventListenerObject {
     this._hostInputElement?.addEventListener('input', this);
   }
 
-  set value(v: any) {
-    if (this.isNumeric(v)) {
-      this.text = v;
-    } else {
-      this.text = '';
-    }
-  }
-
   private _setValue(v: any) {
-    console.log('_setValue', v, this._value);
-    if (this.isNumeric(v)) {
+    if (Utils.isNumeric(v)) {
       this._value = parseFloat(v);
     } else {
       this._value = null;
@@ -46,15 +38,8 @@ export class NumInput extends AbstractInput implements EventListenerObject {
     this.valueChanged.emmit(this._value);
   }
 
-  set text(v: string) {
-    this._text = v;
-    this._hostInputElement && (this._hostInputElement.value = this._text);
-    this._hostInputElement?.dispatchEvent(new Event('input'));
-    this.textChanged.emmit(this._text);
-  }
-
   private _isValidUpdate() {
-    if (this._value === null && this._text === '' || !isNaN(parseFloat(String(this._value)))) {
+    if (Utils.isNumeric(String(this._value)) || this._value === null && this._text === '') {
       this._isValid = true;
       this._controlElement?.classList.remove('error');
     } else {
@@ -67,12 +52,10 @@ export class NumInput extends AbstractInput implements EventListenerObject {
 
   handleEvent(event: Event): void {
     if (event.type === 'input') {
-      const newValue = (event.target as HTMLInputElement).value;
-
-      this._text = newValue;
+      this._text = (event.target as HTMLInputElement).value;
       this.textChanged.emmit(this._text);
 
-      this._setValue(newValue);
+      this._setValue(this._text);
     }
   }
 

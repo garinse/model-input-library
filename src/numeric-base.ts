@@ -1,6 +1,7 @@
 import { EventEmmiter } from "./event-emmiter.js";
+import { Utils } from "./utils/utils.js";
 
-export abstract class AbstractInput {
+export abstract class NumericBase {
   protected _parentElement: HTMLElement | null;
   protected _controlElement: HTMLDivElement | null;
   protected _hostInputElement: HTMLInputElement | null;
@@ -29,8 +30,21 @@ export abstract class AbstractInput {
     this.isValidChanged = new EventEmmiter();
   }
 
-  protected render(): void {
-    
+  abstract render(): void;
+
+  set value(v: any) {
+    if (Utils.isNumeric(v)) {
+      this.text = v;
+    } else {
+      this.text = '';
+    }
+  }
+
+  set text(v: string) {
+    this._text = v;
+    this._hostInputElement && (this._hostInputElement.value = this._text);
+    this._hostInputElement?.dispatchEvent(new Event('input'));
+    this.textChanged.emmit(this._text);
   }
 
   get hostElement(): HTMLElement | null {
@@ -54,9 +68,5 @@ export abstract class AbstractInput {
     this._hostInputElement = null;
     this._parentElement && (this._parentElement.innerHTML = '');
     this._parentElement = null;
-  }
-
-  protected isNumeric(value: string) {
-    return !isNaN(parseFloat(value)) && isFinite(+value);
   }
 }
