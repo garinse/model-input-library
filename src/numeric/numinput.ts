@@ -10,35 +10,46 @@ export class NumInput extends AbstractInput implements EventListenerObject {
   }
 
   render() {
-    super.render();
+    if (!this._parentElement) {
+      return;
+    }
+    this._controlElement = document.createElement('div');
+    this._controlElement.className = `${this._prefix}control`;
+
+    this._hostInputElement = document.createElement('input');
+    this._hostInputElement.type = 'text';
+    this._hostInputElement.className = `${this._prefix}input`;
+    this._controlElement.append(this._hostInputElement);
+
+    this._parentElement.innerHTML = '';
+    this._parentElement.append(this._controlElement);
+
     this._hostInputElement?.addEventListener('input', this);
-    this._hostInputElement?.addEventListener('change', this);
   }
 
   set value(v: any) {
-    this._setValue(v);
-
-    if (this._isValid) {
-      this.text = String(v)
+    if (this.isNumeric(v)) {
+      this.text = v;
     } else {
       this.text = '';
-    } 
+    }
   }
 
-  private _setValue(value: any) {
-    if (value !== '' && !isNaN(parseFloat(value)) && isFinite(+value)) {
-      this._value = parseFloat(value);
+  private _setValue(v: any) {
+    console.log('_setValue', v, this._value);
+    if (this.isNumeric(v)) {
+      this._value = parseFloat(v);
     } else {
       this._value = null;
     }
-    this.valueChanged.emmit(this._value);
     this._isValidUpdate();
+    this.valueChanged.emmit(this._value);
   }
 
   set text(v: string) {
     this._text = v;
     this._hostInputElement && (this._hostInputElement.value = this._text);
-    this._hostInputElement?.dispatchEvent(new Event('change'));
+    this._hostInputElement?.dispatchEvent(new Event('input'));
     this.textChanged.emmit(this._text);
   }
 
@@ -55,20 +66,18 @@ export class NumInput extends AbstractInput implements EventListenerObject {
   }
 
   handleEvent(event: Event): void {
-    switch (event.type) {
-      case 'input':
-        this._text = (event.target as HTMLInputElement).value;
-        this.textChanged.emmit(this._text);
-        this._setValue(this._text);
-        break;
-      case 'change':
-        this._setValue(this._text);
+    if (event.type === 'input') {
+      const newValue = (event.target as HTMLInputElement).value;
+
+      this._text = newValue;
+      this.textChanged.emmit(this._text);
+
+      this._setValue(newValue);
     }
   }
 
   destroy() {
     super.destroy();
     this._hostInputElement?.removeEventListener('input', this);
-    this._hostInputElement?.removeEventListener('change', this);
   }
 }

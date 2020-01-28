@@ -30,19 +30,7 @@ export abstract class AbstractInput {
   }
 
   protected render(): void {
-    if (!this._parentElement) {
-      return;
-    }
-    this._controlElement = document.createElement('div');
-    this._controlElement.className = `${this._prefix}control`;
-
-    this._hostInputElement = document.createElement('input');
-    this._hostInputElement.type = 'text';
-    this._hostInputElement.className = `${this._prefix}input`;
-    this._controlElement.append(this._hostInputElement);
-
-    this._parentElement.innerHTML = '';
-    this._parentElement.append(this._controlElement);
+    
   }
 
   get hostElement(): HTMLElement | null {
@@ -66,5 +54,9 @@ export abstract class AbstractInput {
     this._hostInputElement = null;
     this._parentElement && (this._parentElement.innerHTML = '');
     this._parentElement = null;
+  }
+
+  protected isNumeric(value: string) {
+    return !isNaN(parseFloat(value)) && isFinite(+value);
   }
 }
