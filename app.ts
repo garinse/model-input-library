@@ -77,7 +77,6 @@ window.onload = () => {
 
    const calcValid = document.querySelector('.calc-info .info__valid');
    if (calcValid) {
-     // calcValid.innerHTML = String(calcInput.isValid);
      const subs = calcInput.isValidChanged.subscribe((value) => {
        calcValid.innerHTML = String(value);
      });
@@ -99,6 +98,33 @@ window.onload = () => {
        calcInput.text = String(inputText?.value);
 
      }
+   }
+ }
+
+ /* 
+  * Removing all component 
+  */
+ const numDefaultContainer = document.getElementById('numInputCustom');
+ const calcDefaultContainer = document.getElementById('calcInputCustom');
+
+ let numInputDefault: NumInput | null = null;
+ let calcInputDefault: CalcInput | null = null;
+
+ if (numDefaultContainer) {
+   numInputDefault = new NumInput(numDefaultContainer);
+   numInputDefault.render();
+ }
+
+ if (calcDefaultContainer) {
+   calcInputDefault = new CalcInput(calcDefaultContainer);
+   calcInputDefault.render();
+ }
+
+ const destroyCalcButton: HTMLElement | null = document.getElementById('destroyButton');
+ if (destroyCalcButton) {
+   destroyCalcButton.onclick = () => {
+     numInputDefault?.destroy();
+     calcInputDefault?.destroy();
    }
  }
 }

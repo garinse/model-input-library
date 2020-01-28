@@ -112,4 +112,9 @@ export class CalcInput extends NumericBase implements EventListenerObject {
       this._error = s.message;
     });
   }
+
+  destroy() {
+    super.destroy();
+    this._hostInputElement?.removeEventListener('input', this);
+  }
 }
