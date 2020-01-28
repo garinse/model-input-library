@@ -4,6 +4,7 @@
 
 **CalcInput** - is an input field that allows the user to type arithmetical expressions like <b>5*(7+8)/2-7</b>, and converts them to numeric values (if possible). It contains an area, where calculated value is displayed.
 
+![Input control test](num-calc-input.jpg?raw=true)
 
 ## Example
 
