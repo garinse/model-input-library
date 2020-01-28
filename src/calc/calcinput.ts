@@ -4,10 +4,10 @@ import { Utils } from "../utils/utils.js";
 
 export class CalcInput extends NumericBase implements EventListenerObject {
 
-  _prefix: string;
+  private _prefix: string;
   private _calculator: Calculator;
   private _error: string;
-  _hostResultElement: HTMLSpanElement | null;
+  private _hostResultElement: HTMLSpanElement | null;
 
   constructor(parentElement: HTMLElement) {
     super(parentElement);

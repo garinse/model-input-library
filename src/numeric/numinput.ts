@@ -3,7 +3,7 @@ import { Utils } from "../utils/utils.js";
 
 export class NumInput extends NumericBase implements EventListenerObject {
 
-  _prefix: string;
+  private _prefix: string;
 
   constructor(parentElement: HTMLElement) {
     super(parentElement);

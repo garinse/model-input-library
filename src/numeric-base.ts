@@ -10,8 +10,6 @@ export abstract class NumericBase {
   protected _isValid: boolean;
   protected _timeout: number;
 
-  abstract _prefix: string;
-
   valueChanged: EventEmmiter<number | null>;
   textChanged: EventEmmiter<string>;
   isValidChanged: EventEmmiter<boolean>;
