@@ -1,4 +1,4 @@
-import { EventEmmiter } from "./event-emmiter.js";
+import { EventEmitter } from "./event-emitter.js";
 import { Utils } from "./utils/utils.js";
 
 export abstract class NumericBase {
@@ -10,9 +10,9 @@ export abstract class NumericBase {
   protected _isValid: boolean;
   protected _timeout: number;
 
-  valueChanged: EventEmmiter<number | null>;
-  textChanged: EventEmmiter<string>;
-  isValidChanged: EventEmmiter<boolean>;
+  valueChanged: EventEmitter<number | null>;
+  textChanged: EventEmitter<string>;
+  isValidChanged: EventEmitter<boolean>;
 
   constructor(parentElement: HTMLElement) {
     this._parentElement = parentElement;
@@ -23,9 +23,9 @@ export abstract class NumericBase {
     this._isValid = true;
     this._timeout = 0;
 
-    this.valueChanged = new EventEmmiter();
-    this.textChanged = new EventEmmiter();
-    this.isValidChanged = new EventEmmiter();
+    this.valueChanged = new EventEmitter();
+    this.textChanged = new EventEmitter();
+    this.isValidChanged = new EventEmitter();
   }
 
   abstract render(): void;

@@ -46,7 +46,7 @@ export class CalcInput extends NumericBase {
             this._isValid = false;
             (_b = this._controlElement) === null || _b === void 0 ? void 0 : _b.classList.add('error');
         }
-        this.isValidChanged.emmit(this._isValid);
+        this.isValidChanged.emit(this._isValid);
     }
     _resultUpdate() {
         if (!this._hostResultElement) {

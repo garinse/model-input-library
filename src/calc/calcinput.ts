@@ -61,7 +61,7 @@ export class CalcInput extends NumericBase implements EventListenerObject {
       this._controlElement?.classList.add('error');
     }
 
-    this.isValidChanged.emmit(this._isValid);
+    this.isValidChanged.emit(this._isValid);
   }
 
   private _resultUpdate() {

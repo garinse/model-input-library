@@ -1,7 +1,7 @@
 /**
  * Use to emit custom events of component
  */
-export class EventEmmiter<T> {
+export class EventEmitter<T> {
   private _observers: Observer<T>[] = [];
 
   /**
@@ -33,7 +33,7 @@ export class EventEmmiter<T> {
    * Notifies all subscribers
    * @param value
    */
-  emmit(value?: T) {
+  emit(value?: T) {
     for (const observer of this._observers) {
         observer.next(value);
     }

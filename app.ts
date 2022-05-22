@@ -19,20 +19,16 @@ window.onload = () => {
 
     const numInputText = document.querySelector('.num-info .info__text');
     if (numInputText) {
-      const subs = numComponent.textChanged.subscribe((value) => {
+      numComponent.textChanged.subscribe((value) => {
         numInputText.innerHTML = value;
       });
-
-      // setTimeout(() => subs.unsubscribe(), 3000);
     }
 
     const numValid = document.querySelector('.num-info .info__valid');
     if (numValid) {
-      const subs = numComponent.isValidChanged.subscribe((value) => {
+      numComponent.isValidChanged.subscribe((value) => {
         numValid.innerHTML = String(value);
       });
-
-      // setTimeout(() => subs.unsubscribe(), 3000);
     }
 
     const inputValue: HTMLInputElement | null = document.querySelector('.num-control .input-value');
@@ -77,10 +73,9 @@ window.onload = () => {
 
    const calcValid = document.querySelector('.calc-info .info__valid');
    if (calcValid) {
-     const subs = calcInput.isValidChanged.subscribe((value) => {
+     calcInput.isValidChanged.subscribe((value) => {
        calcValid.innerHTML = String(value);
      });
-     // setTimeout(() => subs.unsubscribe(), 3000);
    }
 
    const inputValue: HTMLInputElement | null = document.querySelector('.calc-control .input-value');
@@ -96,7 +91,6 @@ window.onload = () => {
    if (buttonText) {
      buttonText.onclick = () => {
        calcInput.text = String(inputText?.value);
-
      }
    }
  }
