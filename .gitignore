@@ -7,3 +7,16 @@ node_modules/
 !**/.vscode/launch.template.json
 !**/.vscode/extensions.json
 
+# IDEs and editors
+/.idea
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
