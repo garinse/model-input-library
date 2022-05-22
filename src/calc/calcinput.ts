@@ -44,15 +44,12 @@ export class CalcInput extends NumericBase implements EventListenerObject {
     return this._error;
   }
 
-  private _setValue(v: any) {
-    if (Utils.isNumeric(v)) {
-      this._value = parseFloat(v);
-    } else {
-      this._value = null;
-    }
-    this._isValidUpdate();
-    this.valueChanged.emmit(this._value);
-    this._resultUpdate();
+  set value(v: any) {
+    this.setValue(v);
+  }
+
+  set text(v: string) {
+    this.setText(v);
   }
 
   private _isValidUpdate() {
@@ -81,36 +78,29 @@ export class CalcInput extends NumericBase implements EventListenerObject {
   }
 
   handleEvent(event: Event): void {
-    if (event.type === 'input') {
-      this._text = (event.target as HTMLInputElement).value;
-      this.textChanged.emmit(this._text);
-      this.calculation();
+    if (event.type !== 'input') {
+      return;
     }
+
+    const inputVal = (event.target as HTMLInputElement).value;
+    this.setText(inputVal, false);
+
+    this.calculation();
   }
 
   private calculation() {
-    if (this._timeout) {
-      clearTimeout(this._timeout);
-    }
-
-    new Promise<number>((resolve, reject) => {
-      this._timeout = setTimeout(() => {
-        const result: any = this._calculator.calc(this._text);
-        if (result instanceof Error) {
-          reject(result);
-        } else {
-          resolve(result);
-        }
-      }, 300);
-    })
-    .then((s: number) => {
-      this._setValue(s);
+    try {
+      const result = this._calculator.calc(this._text);
+      this.setValue(result, false);
+      this._isValidUpdate();
+      this._resultUpdate();
       this._error = '';
-    })
-    .catch((s: Error) => {
-      this._setValue(null);
-      this._error = s.message;
-    });
+    } catch (e) {
+      this.setValue(null, false);
+      this._isValidUpdate();
+      this._resultUpdate();
+      this._error = e.message;
+    }
   }
 
   destroy() {
