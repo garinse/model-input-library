@@ -1,3 +1,5 @@
+import { Utils } from "../utils/utils.js";
+
 export class Calculator {
 
   private operators: { [key: string]: { priority: number } } = {
@@ -21,17 +23,14 @@ export class Calculator {
   /**
    * Calculating result of arifmetic string
    * @param {string} value arifmetic string
-   * @returns {number | Error} result or error
+   * @returns {number} result
    */
-  calc(value: string): number | Error {
+  calc(value: string): number {
     if (!value) {
-      return new Error('Invalid incoming string');
+      throw Error('Invalid incoming string');
     }
 
     const opn = this.convertToRpn(value);
-    if (opn instanceof Error) {
-      return opn;
-    }
 
     return this.calcRpn(opn);
   }
@@ -39,9 +38,9 @@ export class Calculator {
   /**
    * Parsing a string and converting to reverse polish notation
    * @param {string} value
-   * @returns {string[] | Error} array rpn or error
+   * @returns {string[]} array rpn
    */
-  convertToRpn(value: string): string[] | Error {
+  convertToRpn(value: string): string[] {
 
     const stack: string[] = [];
     const out: string[] = [];
@@ -58,7 +57,7 @@ export class Calculator {
     for (let i = 0; i < valueArr.length; i++) {
       const element = valueArr[i];
 
-      if (this.isNumeric(element)) {
+      if (Utils.isNumeric(element)) {
         out.push(element);
       } else if (this.operators.hasOwnProperty(element)) {
 
@@ -88,10 +87,10 @@ export class Calculator {
         if (stack.length > 0 && stack[stack.length - 1] === '(') {
           stack.pop();
         } else {
-          return new Error('Invalid incoming expression');
+          throw Error('Invalid incoming expression');
         }
       } else {
-        return new Error('Invalid incoming expression');
+        throw Error('Invalid incoming expression');
       }
     }
 
@@ -100,7 +99,7 @@ export class Calculator {
       if (lastInStackOperator && this.operators.hasOwnProperty(lastInStackOperator)) {
         out.push(lastInStackOperator);
       } else {
-        return new Error('Invalid incoming expression');
+        throw Error('Invalid incoming expression');
       }
 
     }
@@ -111,13 +110,13 @@ export class Calculator {
   /**
    * Calculating result of rpn array
    * @param {string[]} array 
-   * @returns {number | Error} calc result or error
+   * @returns {number} calc result
    */
-  calcRpn(arr: string[]): number | Error {
+  calcRpn(arr: string[]): number {
     const resultArr: any[] = [];
 
     for (let i = 0; i < arr.length; i++) {
-      if (this.isNumeric(arr[i])) {
+      if (Utils.isNumeric(arr[i])) {
         resultArr.push(arr[i]);
       } else {
         const a = resultArr.pop();
@@ -138,23 +137,19 @@ export class Calculator {
     }
 
     if (resultArr.length > 1) {
-      return new Error('Postfix calculation error');
+      throw Error('Postfix calculation error');
     }
 
     let result = resultArr[0];
 
-    if (this.isNumeric(result)) {
+    if (Utils.isNumeric(result)) {
       if (!Number.isInteger(result)) {
         // result = Number(parseFloat(result).toFixed(2));
       }
     } else {
-      result = new Error('Postfix calculation error');
+      throw Error('Postfix calculation error');
     }
 
     return result;
-  }
-
-  private isNumeric(value: string) {
-    return !isNaN(parseFloat(value)) && isFinite(+value);
   }
 }
