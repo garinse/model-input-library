@@ -30,19 +30,28 @@ export abstract class NumericBase {
 
   abstract render(): void;
 
-  set value(v: any) {
-    if (Utils.isNumeric(v)) {
-      this.text = v;
-    } else {
-      this.text = '';
-    }
+  private _updateInput(value: string | null) {
+    this._hostInputElement && (this._hostInputElement.value = value || '');
+    this._hostInputElement?.dispatchEvent(new Event('input'));
   }
 
-  set text(v: string) {
+  setValue(v: any, emitEvent = true) {
+    if (Utils.isNumeric(v)) {
+      this._value = parseFloat(v);
+      emitEvent && this._updateInput(v);
+    } else {
+      this._value = null;
+      emitEvent && this._updateInput(null);
+    }
+
+    this.valueChanged.emit(this._value);
+  }
+
+  setText(v: string, emitEvent = true) {
     this._text = v;
-    this._hostInputElement && (this._hostInputElement.value = this._text);
-    this._hostInputElement?.dispatchEvent(new Event('input'));
-    this.textChanged.emmit(this._text);
+    emitEvent && this._updateInput(v);
+
+    this.textChanged.emit(this._text);
   }
 
   get hostElement(): HTMLElement | null {

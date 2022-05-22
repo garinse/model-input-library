@@ -28,14 +28,12 @@ export class NumInput extends NumericBase implements EventListenerObject {
     this._hostInputElement?.addEventListener('input', this);
   }
 
-  private _setValue(v: any) {
-    if (Utils.isNumeric(v)) {
-      this._value = parseFloat(v);
-    } else {
-      this._value = null;
-    }
-    this._isValidUpdate();
-    this.valueChanged.emmit(this._value);
+  set value(v: any) {
+    this.setValue(v);
+  }
+
+  set text(v: string) {
+    this.setText(v);
   }
 
   private _isValidUpdate() {
@@ -47,16 +45,19 @@ export class NumInput extends NumericBase implements EventListenerObject {
       this._controlElement?.classList.add('error');
     }
 
-    this.isValidChanged.emmit(this._isValid);
+    this.isValidChanged.emit(this._isValid);
   }
 
   handleEvent(event: Event): void {
-    if (event.type === 'input') {
-      this._text = (event.target as HTMLInputElement).value;
-      this.textChanged.emmit(this._text);
-
-      this._setValue(this._text);
+    if (event.type !== 'input') {
+      return;
     }
+
+    const inputVal = (event.target as HTMLInputElement).value;
+
+    this.setValue(inputVal, false);
+    this.setText(inputVal, false);
+    this._isValidUpdate();
   }
 
   destroy() {
