@@ -13,21 +13,21 @@ window.onload = () => {
     const numValue = document.querySelector('.num-info .info__value');
     if (numValue) {
       numComponent.valueChanged.subscribe((value) => {
-        numValue.innerHTML = String(value);
+        numValue.textContent = String(value);
       });
     }
 
     const numInputText = document.querySelector('.num-info .info__text');
     if (numInputText) {
       numComponent.textChanged.subscribe((value) => {
-        numInputText.innerHTML = value;
+        numInputText.textContent = value;
       });
     }
 
     const numValid = document.querySelector('.num-info .info__valid');
     if (numValid) {
       numComponent.isValidChanged.subscribe((value) => {
-        numValid.innerHTML = String(value);
+        numValid.textContent = String(value);
       });
     }
 
@@ -60,21 +60,21 @@ window.onload = () => {
    const calcValue = document.querySelector('.calc-info .info__value');
    if (calcValue) {
      calcInput.valueChanged.subscribe((value) => {
-       calcValue.innerHTML = value ? String(value) : '';
+       calcValue.textContent = value ? String(value) : '';
      });
    }
 
    const calcInputText = document.querySelector('.calc-info .info__text');
    if (calcInputText) {
      calcInput.textChanged.subscribe((value) => {
-       calcInputText.innerHTML = value;
+       calcInputText.textContent = value;
      });
    }
 
    const calcValid = document.querySelector('.calc-info .info__valid');
    if (calcValid) {
      calcInput.isValidChanged.subscribe((value) => {
-       calcValid.innerHTML = String(value);
+       calcValid.textContent = String(value);
      });
    }
 
