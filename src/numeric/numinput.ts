@@ -1,9 +1,6 @@
 import { NumericBase } from "../numeric-base.js";
-import { Utils } from "../utils/utils.js";
 
 export class NumInput extends NumericBase implements EventListenerObject {
-
-  private _prefix: string;
 
   constructor(parentElement: HTMLElement) {
     super(parentElement);
@@ -36,18 +33,6 @@ export class NumInput extends NumericBase implements EventListenerObject {
     this.setText(v);
   }
 
-  private _isValidUpdate() {
-    if (Utils.isNumeric(String(this._value)) || this._value === null && this._text === '') {
-      this._isValid = true;
-      this._controlElement?.classList.remove('error');
-    } else {
-      this._isValid = false;
-      this._controlElement?.classList.add('error');
-    }
-
-    this.isValidChanged.emit(this._isValid);
-  }
-
   handleEvent(event: Event): void {
     if (event.type !== 'input') {
       return;
@@ -57,10 +42,9 @@ export class NumInput extends NumericBase implements EventListenerObject {
 
     this.setValue(inputVal, false);
     this.setText(inputVal, false);
-    this._isValidUpdate();
   }
 
-  destroy() {
+  destroy(): void {
     super.destroy();
     this._hostInputElement?.removeEventListener('input', this);
   }

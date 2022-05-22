@@ -1,10 +1,8 @@
 import { NumericBase } from "../numeric-base.js";
 import { Calculator } from "./calculator.js";
-import { Utils } from "../utils/utils.js";
 
 export class CalcInput extends NumericBase implements EventListenerObject {
 
-  private _prefix: string;
   private _calculator: Calculator;
   private _error: string;
   private _hostResultElement: HTMLSpanElement | null;
@@ -40,7 +38,7 @@ export class CalcInput extends NumericBase implements EventListenerObject {
     this._hostInputElement?.addEventListener('input', this);
   }
 
-  get error() {
+  get error(): string {
     return this._error;
   }
 
@@ -52,19 +50,7 @@ export class CalcInput extends NumericBase implements EventListenerObject {
     this.setText(v);
   }
 
-  private _isValidUpdate() {
-    if (Utils.isNumeric(String(this._value)) || this._value === null && this._text === '') {
-      this._isValid = true;
-      this._controlElement?.classList.remove('error');
-    } else {
-      this._isValid = false;
-      this._controlElement?.classList.add('error');
-    }
-
-    this.isValidChanged.emit(this._isValid);
-  }
-
-  private _resultUpdate() {
+  private resultUpdate(): void {
     if (!this._hostResultElement) {
       return;
     }
@@ -74,6 +60,22 @@ export class CalcInput extends NumericBase implements EventListenerObject {
       this._hostResultElement.innerText = String(this._value);
     } else {
       this._hostResultElement.innerText = '?';
+    }
+  }
+
+  private valueUpdate(value: string): void {
+    this.setValue(value, false);
+    this.resultUpdate();
+  }
+
+  private calculation(): void {
+    try {
+      const result = this._calculator.calc(this._text);
+      this.valueUpdate(result.toString())
+      this._error = '';
+    } catch (e) {
+      this.valueUpdate('')
+      this._error = e.message;
     }
   }
 
@@ -88,22 +90,7 @@ export class CalcInput extends NumericBase implements EventListenerObject {
     this.calculation();
   }
 
-  private calculation() {
-    try {
-      const result = this._calculator.calc(this._text);
-      this.setValue(result, false);
-      this._isValidUpdate();
-      this._resultUpdate();
-      this._error = '';
-    } catch (e) {
-      this.setValue(null, false);
-      this._isValidUpdate();
-      this._resultUpdate();
-      this._error = e.message;
-    }
-  }
-
-  destroy() {
+  destroy(): void {
     super.destroy();
     this._hostInputElement?.removeEventListener('input', this);
   }
